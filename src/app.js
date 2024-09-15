@@ -1,26 +1,27 @@
-// app.js
-const express = require("express");
-const bodyParser = require("body-parser");
-const passport = require("passport");
-const authRoutes = require("./routes/authRoutes");
-require("./config/passport")(passport); // Pass passport configuration
-const connectDB = require("./service/DBConnection");
+import express from "express";
+import passport from "passport";
+import { passportConfig } from "./config/passport.js";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/authRoutes.js";
 
-// Connect to MongoDB
-// mongoose.connect("mongodb://localhost/botdb", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-let connection = connectDB();
-console.log({ connection });
-const app = express();
+export const app = express();
 
-app.use(bodyParser.json());
+passportConfig(passport);
 app.use(passport.initialize());
+
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
 // Routes
 app.use("/auth", authRoutes);
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+// prompt routes
+// app.use("/prompt", promptRoutes);

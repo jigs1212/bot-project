@@ -1,15 +1,14 @@
-// routes/authRoutes.js
-const express = require("express");
-const { register, login } = require("../controllers/authController");
-const passport = require("passport");
+import express from "express";
+import { register, login } from "../controllers/auth.controller.js";
+import passport from "passport";
 
-const router = express.Router();
+const authRoutes = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
+authRoutes.post("/register", register);
+authRoutes.post("/login", login);
 
 // Example of a protected route
-router.get(
+authRoutes.get(
   "/protected",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -17,4 +16,4 @@ router.get(
   }
 );
 
-module.exports = router;
+export default authRoutes;

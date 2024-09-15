@@ -1,8 +1,7 @@
-// controllers/authController.js
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
+import { User } from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   const { username, password } = req.body;
   try {
     const newUser = new User({ username, password });
@@ -13,7 +12,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });

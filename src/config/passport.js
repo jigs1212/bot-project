@@ -1,14 +1,12 @@
-// config/passport.js
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const User = require("../models/User");
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
+import { User } from "../models/user.model.js";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "secret_key", // Replace this with an environment variable
+  secretOrKey: `${process.env.JWT_SECRET}`, // Replace this with an environment variable
 };
 
-module.exports = (passport) => {
+export const passportConfig = (passport) => {
   passport.use(
     new JwtStrategy(opts, async (jwt_payload, done) => {
       try {
